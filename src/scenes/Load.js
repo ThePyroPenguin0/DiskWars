@@ -1,6 +1,6 @@
 class Load extends Phaser.Scene{
     constructor(){
-        super('loadScene');
+        super('loadScene'); // TO DO!
     }
 
     create(){
