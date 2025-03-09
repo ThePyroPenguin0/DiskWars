@@ -4,7 +4,9 @@ class Play extends Phaser.Scene {
         this.load.image('hexOrange', 'assets/hexOrange.png');
         this.load.image('diskBlue', './assets/diskBlue.png');
         this.load.image('diskOrange', './assets/diskOrange.png');
+        
         this.load.scenePlugin('rexboardplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexboardplugin.min.js', 'rexBoard', 'rexBoard');
+    
     }
 
     constructor() {
@@ -15,6 +17,7 @@ class Play extends Phaser.Scene {
         // You don't see the entire board on screen in game? I have some bad news for you...
         let staggeraxis = 'x';
         let staggerindex = 'odd';
+        
         let boardBlue = this.rexBoard.add.board({
             grid: {
                 gridType: 'hexagonGrid',
@@ -72,9 +75,11 @@ class Play extends Phaser.Scene {
             this.add.image(worldXY.x, worldXY.y, 'hexOrange').setScale(0.5, 0.25).setOrigin(0.5);
         }
 
-        this.playerBlue = new Player(this, boardBlue, 10, 10, 0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
-        this.playerOrange = new Player(this, boardOrange, 10, 20, 0xFFA500); // Orange player with orange color code
-
+        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_player_temp',0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
+        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_player_temp',0xFFA500); // Orange player with orange color code
+        //makes scale larger 
+        this.playerBlue.setScale(2.5)
+        this.playerOrange.setScale(2.5)
         this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(0) }
             else if (this.playerBlue.mode == "target") {
