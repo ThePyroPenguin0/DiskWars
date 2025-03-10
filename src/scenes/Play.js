@@ -14,6 +14,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.sfxBackground = this.sound.add('sfx-background')
+        this.sfxBackground.setLoop(true)
+        this.sfxBackground.setVolume(.5)
         // You don't see the entire board on screen in game? I have some bad news for you...
         let staggeraxis = 'x';
         let staggerindex = 'odd';

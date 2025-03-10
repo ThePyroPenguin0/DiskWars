@@ -11,8 +11,8 @@ let config = {
 
 }
 
-const game = new Phaser.Game(config)
-const w = game.config.width
-const h = game.config.height
-const centerX = game.config.width / 2
-const centerY = game.config.height / 2
+let game = new Phaser.Game(config)
+let w = game.config.width
+let h = game.config.height
+let centerX = game.config.width / 2
+let centerY = game.config.height / 2

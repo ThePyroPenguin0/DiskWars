@@ -14,6 +14,7 @@ class Load extends Phaser.Scene{
     this.load.on('complete',()=>{
         loadingBar.destroy()
     })
+        this.load.audio('sfx-background','./assets/synthwave_background.mp3')
         this.load.spritesheet('orange_nw_walk', './assets/orange_NW_walk_animation.png',{
             frameWidth: 32,
             frameHeight: 32,
