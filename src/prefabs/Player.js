@@ -1,6 +1,6 @@
 class Player extends Phaser.GameObjects.Sprite {
-    constructor(scene, board, startX, startY, color = 0xFFA500) {
-        super(scene, startX, startY, color);
+    constructor(scene, board, startX, startY, texture,color = 0xFFA500) {
+        super(scene, startX, startY,texture, color);
         scene.add.existing(this);
         if(color == 0x0000FF){
             this.color = "blue";
@@ -98,6 +98,7 @@ class Player extends Phaser.GameObjects.Sprite {
             { x: 0, y: 1 }, // Down-Left 4
             { x: 1, y: 1 }   // Down-Right 5
         ];
+        //this.anims.play('B_NW_Walk_Animation')
         let newX = this.tileXY.x + directions[direction].x;
         let newY = this.tileXY.y + directions[direction].y;
 
@@ -137,7 +138,6 @@ class Player extends Phaser.GameObjects.Sprite {
             { x: 0, y: 1 }, // Down-Left 4
             { x: 1, y: 1 }   // Down-Right 5
         ];
-
         // Get old X/Y
         let currentX = this.targetTileXY.x;
         let currentY = this.targetTileXY.y;

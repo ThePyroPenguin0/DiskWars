@@ -1,11 +1,18 @@
+'use strict'
 let config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
-    scene: [Menu, Play],
+    // centers screen
+    scale: {
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    scene: [Load, Menu, Play]
+
 }
 
-const game = new Phaser.Game(config)
-
-const centerX = game.config.width / 2
-const centerY = game.config.height / 2
+let game = new Phaser.Game(config)
+let w = game.config.width
+let h = game.config.height
+let centerX = game.config.width / 2
+let centerY = game.config.height / 2
