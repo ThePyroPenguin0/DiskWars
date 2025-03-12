@@ -18,25 +18,38 @@ class Disk extends Phaser.Physics.Arcade.Image {
         this.setOrigin(0.5, 0.5);
 
         this.setSize(this.width, this.height);
+
+        this.initialSpeed = 1000; 
+        this.decelerationFactor = 0.98;
     }
 
-throwDisk() {
-    let radians = Phaser.Math.DegToRad(this.throwAngle);
+    throwDisk() {
+        let radians = Phaser.Math.DegToRad(this.throwAngle);
 
-    let speed = 800; 
+        this.setVelocity(
+            Math.cos(radians) * this.initialSpeed,
+            Math.sin(radians) * this.initialSpeed
+        );
 
-    this.setVelocity(
-        Math.cos(radians) * speed,  // X velocity based on the angle
-        Math.sin(radians) * speed   // Y velocity based on the angle
-    );
+        this.setBounce(1);
+        this.setCollideWorldBounds(true);
 
-    this.setBounce(1);
-    this.scene.time.delayedCall(1000, () => {
-        this.destroy();
-        console.log("Disk destroyed after 500ms.");
-    });
+        this.scene.events.on('update', this.slowDownDisk, this);
 
-    this.setCollideWorldBounds(true);
-}
+        this.scene.time.delayedCall(1500, () => {
+            this.destroy();
+            console.log("Disk destroyed after 1000ms.");
+        });
+    }
 
+    slowDownDisk() {
+        if (!this.active) {
+            return;
+        }
+
+        this.setVelocity(
+            this.body.velocity.x * this.decelerationFactor,
+            this.body.velocity.y * this.decelerationFactor
+        );
+    }
 }

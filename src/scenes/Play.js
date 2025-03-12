@@ -4,9 +4,9 @@ class Play extends Phaser.Scene {
         this.load.image('hexOrange', 'assets/hexOrange.png');
         this.load.image('diskBlue', './assets/diskBlue.png');
         this.load.image('diskOrange', './assets/diskOrange.png');
-        
+
         this.load.scenePlugin('rexboardplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexboardplugin.min.js', 'rexBoard', 'rexBoard');
-    
+
     }
 
     constructor() {
@@ -20,7 +20,7 @@ class Play extends Phaser.Scene {
         // You don't see the entire board on screen in game? I have some bad news for you...
         let staggeraxis = 'x';
         let staggerindex = 'odd';
-        
+
         let boardBlue = this.rexBoard.add.board({
             grid: {
                 gridType: 'hexagonGrid',
@@ -78,21 +78,21 @@ class Play extends Phaser.Scene {
             this.add.image(worldXY.x, worldXY.y, 'hexOrange').setScale(0.5, 0.25).setOrigin(0.5);
         }
 
-        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_player_temp',0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
-        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_player_temp',0xFFA500); // Orange player with orange color code
+        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_player_temp', 0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
+        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_player_temp', 0xFFA500); // Orange player with orange color code
         //makes scale larger 
         this.playerBlue.setScale(2.5)
         this.playerOrange.setScale(2.5)
         this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(0) }
-            else {this.playerBlue.changeDiskAngle("d");}
+            else { this.playerBlue.changeDiskAngle("d"); }
         });
         this.input.keyboard.on('keydown-W', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(2) }
         });
         this.input.keyboard.on('keydown-A', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(3) }
-            else {this.playerBlue.changeDiskAngle("a");}
+            else { this.playerBlue.changeDiskAngle("a"); }
         });
         this.input.keyboard.on('keydown-S', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(4) }
@@ -103,21 +103,28 @@ class Play extends Phaser.Scene {
             }
             else {
                 this.playerBlue.throwDiskFromPlayer();
-                this.playerBlue.toggleMode();
+                this.playerBlue.deleteLine();
             }
+        });
+        this.input.keyboard.on('keydown-X', () => {
+            this.playerBlue.deleteLine();
+            this.playerBlue.throwDiskFromPlayer();
+
         });
 
         this.input.keyboard.on('keydown-L', () => {
-            this.playerOrange.moveDirection(0)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(0) }
+            else { this.playerOrange.changeDiskAngle("d"); }
         });
         this.input.keyboard.on('keydown-I', () => {
-            this.playerOrange.moveDirection(2)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(2) }
         });
         this.input.keyboard.on('keydown-J', () => {
-            this.playerOrange.moveDirection(3)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(3) }
+            else { this.playerOrange.changeDiskAngle("a"); }
         });
         this.input.keyboard.on('keydown-K', () => {
-            this.playerOrange.moveDirection(4)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(4) }
         });
         this.input.keyboard.on('keydown-U', () => {
             if (this.playerOrange.mode == "move") {
@@ -125,8 +132,13 @@ class Play extends Phaser.Scene {
             }
             else {
                 this.playerOrange.throwDiskFromPlayer();
-                this.playerOrange.toggleMode(); // To be changed as game gets further along.
+                this.playerOrange.deleteLine();
             }
+        });
+        this.input.keyboard.on('keydown-N', () => {
+            this.playerOrange.deleteLine();
+            this.playerOrange.throwDiskFromPlayer();
+
         });
 
         this.input.keyboard.on('keydown-ESC', () => {

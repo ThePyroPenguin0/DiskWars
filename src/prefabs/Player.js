@@ -81,7 +81,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.moveTo(newX, newY);
     }
 
-    emitDisk(targetTileXY) {
+    emitDisk() {
         // Determine the opposing board: if we're on the blue board, the opposing realm is orange, and vice versa.
         let opposingBoard;
         if (this.board === this.scene.playerBlue.board) {
@@ -107,10 +107,6 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     throwDiskFromPlayer() {
-        if (this.mode !== "target") {
-            console.log("Player must be in 'target' mode to throw the disk.");
-            return;
-        }
 
         let targetTileXY = this.targetTileXY;
         let disk = new Disk(this.scene, this.board, this.opposingBoard, this.tileXY, this.throwAngle, this.color);
@@ -123,31 +119,33 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     emitLine() {
-        if (this.mode !== "target") {
-            console.log("Mode must be 'target' to emit a line.");
-            return;
-        }
-    
         if (this.lineGraphics) {
             this.lineGraphics.clear();
             this.lineGraphics.destroy();
         }
-    
+
         if (this.color === 'blue') {
             this.lineGraphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0x0000FF } });
         } else {
             this.lineGraphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0xFFA500 } });
         }
 
-        let radians = Phaser.Math.DegToRad(this.throwAngle); 
+        let radians = Phaser.Math.DegToRad(this.throwAngle);
         let lineLength = 200;
         let deltaX = Math.cos(radians) * lineLength;
-        let deltaY = Math.sin(radians) * lineLength;    
+        let deltaY = Math.sin(radians) * lineLength;
         let worldStart = this.board.tileXYToWorldXY(this.tileXY.x, this.tileXY.y);
         let worldEndX = worldStart.x + deltaX;
         let worldEndY = worldStart.y + deltaY;
-    
-        this.lineGraphics.strokeLineShape(new Phaser.Geom.Line(worldStart.x, worldStart.y, worldEndX, worldEndY));    
+
+        this.lineGraphics.strokeLineShape(new Phaser.Geom.Line(worldStart.x, worldStart.y, worldEndX, worldEndY));
         console.log(`Drawing line from (${worldStart.x}, ${worldStart.y}) to (${worldEndX}, ${worldEndY}) in direction ${this.throwAngle}°`);
+    }
+
+    deleteLine() {
+        if (this.lineGraphics) {
+            this.lineGraphics.clear();
+            this.lineGraphics.destroy();
+        }
     }
 }
