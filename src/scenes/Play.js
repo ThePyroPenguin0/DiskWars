@@ -145,14 +145,18 @@ class Play extends Phaser.Scene {
         // create disk collider 
         this.physics.add.collider(this.playerBlue, this.orangeDisksGroup,(playerBlue,orangeDisksGroup) =>{
             console.log("SUCCESS blue player hit by orange disk")
+            // add death code here
+
+            // reset mechanic
         })
 
-        
-            //console.log("blue player hit by orange disk")
         this.physics.add.collider(this.playerOrange, this.blueDisksGroup,(playerOrange,blueDisksGroup) =>{
             console.log("SUCCESS orange player hit by blue disk")
+            // add death code here
+
+            // reset mechanic
         })
-            //console.log("orange player hit by blue disk")
+           
         
     }
 

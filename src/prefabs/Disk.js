@@ -3,11 +3,17 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
         let startWorldXY = sourceBoard.tileXYToWorldXY(startTileXY.x, startTileXY.y);
         if (color == "blue") {
             super(scene, startWorldXY.x, startWorldXY.y, "diskBlue");
+            // detects if blue player threw blue disk, adds it to blueDisk group used for collisions
+            this.scene.blueDisksGroup.add(this)
+            console.log("blue disk added to blueDisk group")
+            
         }
         else{
             super(scene, startWorldXY.x, startWorldXY.y, "diskOrange");
+            // detects if orange player threw orange disk, adds it to orangeDisk group used for collisions
+            this.scene.orangeDisksGroup.add(this)
+            console.log("orange disk added to orangeDisk group")
         }
-
         scene.add.existing(this);
         // loads physics body into scene 
         scene.physics.add.existing(this)

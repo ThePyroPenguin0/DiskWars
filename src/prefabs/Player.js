@@ -219,20 +219,9 @@ class Player extends Phaser.Physics.Arcade.Sprite  {
         } else {
             opposingBoard = this.scene.playerBlue.board;
         }
-
+        
         let disk = new Disk(this.scene, this.board, this.opposingBoard, this.tileXY, targetTileXY, this.color);
-       
-        console.log("opposing board = ", this.opposingBoard)
-        if(this.color = "blue")
-            {
-                this.scene.blueDisksGroup.add(disk)
-                console.log("blue disk added to blueDisk group")
-            }
-        else{
-                this.scene.orangeDisksGroup.add(disk)
-                console.log("orange disk added to orangeDisk group")
-               
-            }
+        let color = this.color
         disk.throwDisk();
         console.log(`Throwing disk from (${this.tileXY.x}, ${this.tileXY.y}) to (${targetTileXY.x}, ${targetTileXY.y})`);
     }
