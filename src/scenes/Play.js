@@ -85,26 +85,21 @@ class Play extends Phaser.Scene {
         this.playerOrange.setScale(2.5)
         this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(0) }
-            else if (this.playerBlue.mode == "target") {
-                this.playerBlue.moveReticle(0);
-            }
+            else {this.playerBlue.changeDiskAngle("d");}
         });
         this.input.keyboard.on('keydown-W', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(2) }
-            else if (this.playerBlue.mode == "target") { this.playerBlue.moveReticle(2) }
         });
         this.input.keyboard.on('keydown-A', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(3) }
-            else if (this.playerBlue.mode == "target") { this.playerBlue.moveReticle(3) }
+            else {this.playerBlue.changeDiskAngle("a");}
         });
         this.input.keyboard.on('keydown-S', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(4) }
-            else if (this.playerBlue.mode == "target") { this.playerBlue.moveReticle(4) }
         });
         this.input.keyboard.on('keydown-E', () => {
             if (this.playerBlue.mode == "move") {
                 this.playerBlue.toggleMode();
-                this.playerBlue.setReticle(); // To be changed as game gets further along. THIS IS A DEBUG STATE!
             }
             else {
                 this.playerBlue.throwDiskFromPlayer();
@@ -126,8 +121,7 @@ class Play extends Phaser.Scene {
         });
         this.input.keyboard.on('keydown-U', () => {
             if (this.playerOrange.mode == "move") {
-                this.playerOrange.toggleMode()
-                this.playerOrange.setReticle();
+                this.playerOrange.toggleMode();
             }
             else {
                 this.playerOrange.throwDiskFromPlayer();

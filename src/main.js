@@ -1,4 +1,5 @@
 'use strict'
+
 let config = {
     type: Phaser.AUTO,
     width: 800,
@@ -6,6 +7,12 @@ let config = {
     // centers screen
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            debug: true
+        }
     },
     scene: [Load, Menu, Play]
 
