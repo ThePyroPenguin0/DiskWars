@@ -1,7 +1,7 @@
 class Play extends Phaser.Scene {
     preload() {
         this.load.scenePlugin('rexboardplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexboardplugin.min.js', 'rexBoard', 'rexBoard');
-    
+
     }
 
     constructor() {
@@ -16,7 +16,7 @@ class Play extends Phaser.Scene {
         // You don't see the entire board on screen in game? I have some bad news for you...
         let staggeraxis = 'x';
         let staggerindex = 'odd';
-        
+
         let boardBlue = this.rexBoard.add.board({
             grid: {
                 gridType: 'hexagonGrid',
@@ -79,59 +79,66 @@ class Play extends Phaser.Scene {
         this.blueDisksGroup = this.add.group()
         this.orangeDisksGroup = this.add.group()
        //  this.orangeDisks = new Group(this.physics,this.scene)
+
         //makes scale larger 
         this.playerBlue.setScale(1.5)
         this.playerOrange.setScale(1.5)
         this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(0) }
-            else if (this.playerBlue.mode == "target") {
-                this.playerBlue.moveReticle(0);
-            }
+            else { this.playerBlue.changeDiskAngle("d"); }
         });
         this.input.keyboard.on('keydown-W', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(2) }
-            else if (this.playerBlue.mode == "target") { this.playerBlue.moveReticle(2) }
         });
         this.input.keyboard.on('keydown-A', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(3) }
-            else if (this.playerBlue.mode == "target") { this.playerBlue.moveReticle(3) }
+            else { this.playerBlue.changeDiskAngle("a"); }
         });
         this.input.keyboard.on('keydown-S', () => {
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(4) }
-            else if (this.playerBlue.mode == "target") { this.playerBlue.moveReticle(4) }
         });
         this.input.keyboard.on('keydown-E', () => {
             if (this.playerBlue.mode == "move") {
                 this.playerBlue.toggleMode();
-                this.playerBlue.setReticle(); // To be changed as game gets further along. THIS IS A DEBUG STATE!
             }
             else {
                 this.playerBlue.throwDiskFromPlayer();
-                this.playerBlue.toggleMode();
+                this.playerBlue.deleteLine();
             }
+        });
+        this.input.keyboard.on('keydown-X', () => {
+            this.playerBlue.deleteLine();
+            this.playerBlue.throwDiskFromPlayer();
+
         });
 
         this.input.keyboard.on('keydown-L', () => {
-            this.playerOrange.moveDirection(0)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(0) }
+            else { this.playerOrange.changeDiskAngle("d"); }
         });
         this.input.keyboard.on('keydown-I', () => {
-            this.playerOrange.moveDirection(2)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(2) }
         });
         this.input.keyboard.on('keydown-J', () => {
-            this.playerOrange.moveDirection(3)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(3) }
+            else { this.playerOrange.changeDiskAngle("a"); }
         });
         this.input.keyboard.on('keydown-K', () => {
-            this.playerOrange.moveDirection(4)
+            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(4) }
         });
         this.input.keyboard.on('keydown-U', () => {
             if (this.playerOrange.mode == "move") {
-                this.playerOrange.toggleMode()
-                this.playerOrange.setReticle();
+                this.playerOrange.toggleMode();
             }
             else {
                 this.playerOrange.throwDiskFromPlayer();
-                this.playerOrange.toggleMode(); // To be changed as game gets further along.
+                this.playerOrange.deleteLine();
             }
+        });
+        this.input.keyboard.on('keydown-N', () => {
+            this.playerOrange.deleteLine();
+            this.playerOrange.throwDiskFromPlayer();
+
         });
 
         this.input.keyboard.on('keydown-ESC', () => {
