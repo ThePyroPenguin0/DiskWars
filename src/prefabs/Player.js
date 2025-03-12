@@ -1,8 +1,12 @@
-class Player extends Phaser.GameObjects.Sprite {
-    constructor(scene, board, startX, startY, texture, color = 0xFFA500) {
-        super(scene, startX, startY, texture, color);
+class Player extends Phaser.Physics.Arcade.Sprite  {
+    constructor(scene, board, startX, startY, texture,color = 0xFFA500) {
+        super(scene, startX, startY,texture, color);
         scene.add.existing(this);
-        if (color == 0x0000FF) {
+        // adds physics body to disk
+        scene.physics.add.existing(this) 
+        this.body.setSize(this.width/4,this.height/2)
+        this.body.onCollide = true
+        if(color == 0x0000FF){
             this.color = "blue";
             this.throwAngle = -45;
         }
@@ -22,6 +26,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.speed = 100;
         this.mode = "move"; // "move" or "target" are valid modes
+        this.enemy ;
 
         this.screenBounds = {
             left: 0,
@@ -89,7 +94,7 @@ class Player extends Phaser.GameObjects.Sprite {
         } else {
             opposingBoard = this.scene.playerBlue.board;
         }
-
+    
         let disk = new Disk(this.scene, this.board, opposingBoard, this.tileXY, this.throwAngle, 0xFF00FF);
 
         disk.throwDisk();
@@ -107,16 +112,15 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     throwDiskFromPlayer() {
-
-        let targetTileXY = this.targetTileXY;
         let disk = new Disk(this.scene, this.board, this.opposingBoard, this.tileXY, this.throwAngle, this.color);
         disk.throwDisk();
-        console.log(`Throwing disk from (${this.tileXY.x}, ${this.tileXY.y})`);
+        //console.log(`Throwing disk from (${this.tileXY.x}, ${this.tileXY.y})`);
         if (this.mode == "target") {
             this.mode = "move";
             console.log("Switched mode to move.")
         }
     }
+  
 
     emitLine() {
         if (this.lineGraphics) {
@@ -130,6 +134,7 @@ class Player extends Phaser.GameObjects.Sprite {
             this.lineGraphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0xFFA500 } });
         }
 
+
         let radians = Phaser.Math.DegToRad(this.throwAngle);
         let lineLength = 200;
         let deltaX = Math.cos(radians) * lineLength;
@@ -138,6 +143,12 @@ class Player extends Phaser.GameObjects.Sprite {
         let worldEndX = worldStart.x + deltaX;
         let worldEndY = worldStart.y + deltaY;
 
+         let opposingBoard;
+        if (this.board === this.scene.playerBlue.board) {
+            opposingBoard = this.scene.playerOrange.board;
+        } else {
+            opposingBoard = this.scene.playerBlue.board;
+        }
         this.lineGraphics.strokeLineShape(new Phaser.Geom.Line(worldStart.x, worldStart.y, worldEndX, worldEndY));
         console.log(`Drawing line from (${worldStart.x}, ${worldStart.y}) to (${worldEndX}, ${worldEndY}) in direction ${this.throwAngle}°`);
     }
