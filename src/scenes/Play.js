@@ -1,10 +1,5 @@
 class Play extends Phaser.Scene {
     preload() {
-        this.load.image('hexBlue', 'assets/hexBlue.png');
-        this.load.image('hexOrange', 'assets/hexOrange.png');
-        this.load.image('diskBlue', './assets/diskBlue.png');
-        this.load.image('diskOrange', './assets/diskOrange.png');
-        
         this.load.scenePlugin('rexboardplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexboardplugin.min.js', 'rexBoard', 'rexBoard');
     
     }
@@ -16,7 +11,8 @@ class Play extends Phaser.Scene {
     create() {
         this.sfxBackground = this.sound.add('sfx-background')
         this.sfxBackground.setLoop(true)
-        this.sfxBackground.setVolume(.5)
+        this.sfxBackground.setVolume(1.5)
+        this.sfxBackground.play()
         // You don't see the entire board on screen in game? I have some bad news for you...
         let staggeraxis = 'x';
         let staggerindex = 'odd';
@@ -80,9 +76,12 @@ class Play extends Phaser.Scene {
 
         this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_player_temp',0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
         this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_player_temp',0xFFA500); // Orange player with orange color code
+        this.blueDisksGroup = this.add.group()
+        this.orangeDisksGroup = this.add.group()
+       //  this.orangeDisks = new Group(this.physics,this.scene)
         //makes scale larger 
-        this.playerBlue.setScale(2.5)
-        this.playerOrange.setScale(2.5)
+        this.playerBlue.setScale(1.5)
+        this.playerOrange.setScale(1.5)
         this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
             if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(0) }
             else if (this.playerBlue.mode == "target") {
@@ -138,9 +137,36 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on('keydown-ESC', () => {
             this.scene.start('menuScene');
         });
+        // turns on physics debug mode
+         this.input.keyboard.on('keydown-G', function() {
+             this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
+             this.physics.world.debugGraphic.clear()
+        }, this)
+        // create disk collider 
+        this.physics.add.collider(this.playerBlue, this.orangeDisksGroup,(playerBlue,orangeDisksGroup) =>{
+            console.log("SUCCESS blue player hit by orange disk")
+        })
+
+        
+            //console.log("blue player hit by orange disk")
+        this.physics.add.collider(this.playerOrange, this.blueDisksGroup,(playerOrange,blueDisksGroup) =>{
+            console.log("SUCCESS orange player hit by blue disk")
+        })
+            //console.log("orange player hit by blue disk")
+        
     }
 
     isValidTile(player, board, x, y) { // Basically, if the tile that is being checked exists on the screen then it is valid. Otherwise no.
         return board.validTiles.some(tile => tile.x === x && tile.y === y) && (player.x >= 20 && player.x <= 780 && player.y >= 20 && player.y <= 580);
+    }
+    update(){
+        if(this.orangeDiskGroup !=  null)
+        {
+        this.physics.collide(this.playerBlue,this.orangeDiskGroup)
+        }
+        if(this.blueDiskGroup != null)
+        {
+        this.physics.collide(this.playerOrange,this.blueDiskGroup)
+        }
     }
 }

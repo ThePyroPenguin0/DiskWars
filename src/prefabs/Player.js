@@ -1,7 +1,11 @@
-class Player extends Phaser.GameObjects.Sprite {
+class Player extends Phaser.Physics.Arcade.Sprite  {
     constructor(scene, board, startX, startY, texture,color = 0xFFA500) {
         super(scene, startX, startY,texture, color);
         scene.add.existing(this);
+        // adds physics body to disk
+        scene.physics.add.existing(this) 
+        this.body.setSize(this.width/4,this.height/2)
+        this.body.onCollide = true
         if(color == 0x0000FF){
             this.color = "blue";
         }
@@ -24,6 +28,7 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.speed = 100;
         this.mode = "move"; // "move" or "target" are valid modes
+        this.enemy ;
 
         this.screenBounds = {
             left: 0,
@@ -176,7 +181,6 @@ class Player extends Phaser.GameObjects.Sprite {
         }
 
         let disk = new Disk(this.scene, this.board, opposingBoard, this.tileXY, targetTileXY, 0xFF00FF);
-
         this.targetingReticle.setVisible(false);
         disk.throwDisk();
     }
@@ -208,7 +212,27 @@ class Player extends Phaser.GameObjects.Sprite {
         }
 
         let targetTileXY = this.targetTileXY;
+        // added this in to test
+        let opposingBoard;
+        if (this.board === this.scene.playerBlue.board) {
+            opposingBoard = this.scene.playerOrange.board;
+        } else {
+            opposingBoard = this.scene.playerBlue.board;
+        }
+
         let disk = new Disk(this.scene, this.board, this.opposingBoard, this.tileXY, targetTileXY, this.color);
+       
+        console.log("opposing board = ", this.opposingBoard)
+        if(this.color = "blue")
+            {
+                this.scene.blueDisksGroup.add(disk)
+                console.log("blue disk added to blueDisk group")
+            }
+        else{
+                this.scene.orangeDisksGroup.add(disk)
+                console.log("orange disk added to orangeDisk group")
+               
+            }
         disk.throwDisk();
         console.log(`Throwing disk from (${this.tileXY.x}, ${this.tileXY.y}) to (${targetTileXY.x}, ${targetTileXY.y})`);
     }

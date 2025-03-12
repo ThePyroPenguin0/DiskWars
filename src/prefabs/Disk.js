@@ -1,4 +1,4 @@
-class Disk extends Phaser.GameObjects.Image {
+class Disk extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, sourceBoard, targetBoard, startTileXY, targetTileXY, color) { // You have no idea how long it took me to actually get the colors to match.
         let startWorldXY = sourceBoard.tileXYToWorldXY(startTileXY.x, startTileXY.y);
         if (color == "blue") {
@@ -9,6 +9,13 @@ class Disk extends Phaser.GameObjects.Image {
         }
 
         scene.add.existing(this);
+        // loads physics body into scene 
+        scene.physics.add.existing(this)
+        this.body.setCircle(this.width/4)
+        this.body.offset.x = this.height/4
+        this.body.offset.y = this.width/4
+        this.body.onCollide = true // allows collisions
+
 
         this.sourceBoard = sourceBoard;
         this.targetBoard = targetBoard;

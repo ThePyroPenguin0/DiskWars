@@ -21,6 +21,10 @@ class Load extends Phaser.Scene{
             startFrame: 0,
             endFrame: 6
         })
+        this.load.spritesheet('backgroundTiles', 'assets/title_screen.png', {
+            frameWidth: 250,
+            frameHeight: 300
+        });
         this.load.spritesheet('orange_ne_walk','./assets/orange_NE_walk_animation.png',{
             frameWidth: 32,
             frameHeight: 32,
@@ -41,6 +45,11 @@ class Load extends Phaser.Scene{
         })
         this.load.image('o_player_temp','./assets/o_player_temp.png')
         this.load.image('b_player_temp','./assets/b_player_temp.png')
+        this.load.image('hexBlue', 'assets/hexBlue.png');
+        this.load.image('hexOrange', 'assets/hexOrange.png');
+        this.load.image('diskBlue', './assets/diskBlue.png');
+        this.load.image('diskOrange', './assets/diskOrange.png');
+        
     }
     create(){
         this.scene.start('menuScene')
@@ -68,6 +77,12 @@ class Load extends Phaser.Scene{
             repeat: -1,
             frameRate: 15
         })
+        this.anims.create({
+            key: 'backgroundAnim',
+            frames: this.anims.generateFrameNumbers('backgroundTiles', { start: 0, end: 11 }),
+            frameRate: 12,
+            repeat: -1
+        });
     }
        
 }
