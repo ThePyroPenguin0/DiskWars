@@ -11,8 +11,10 @@ class Play extends Phaser.Scene {
     create() {
         this.sfxBackground = this.sound.add('sfx-background')
         this.sfxBackground.setLoop(true)
-        this.sfxBackground.setVolume(1.5)
+        this.sfxBackground.setVolume(.6)
         this.sfxBackground.play()
+        this.sfxDeathBoom = this.sound.add('sfx-deathBoom')
+        this.sfxDeathBoom.setVolume(1)
         // You don't see the entire board on screen in game? I have some bad news for you...
         let staggeraxis = 'x';
         let staggerindex = 'odd';
@@ -152,16 +154,47 @@ class Play extends Phaser.Scene {
         // create disk collider 
         this.physics.add.collider(this.playerBlue, this.orangeDisksGroup,(playerBlue,orangeDisksGroup) =>{
             console.log("SUCCESS blue player hit by orange disk")
+            this.sfxDeathBoom.play()
             // add death code here
-
+          const emitters = this.add.particles(playerBlue.x,playerBlue.y,'hexBlue',{
+            emitting: false,
+            speed:{min: 50, max: 200},
+            advance:2000,
+            lifespan: 700,
+            sortOrderAsc: true,
+            scale: { start: 0.2, end: .5 },
+            blendMode: 'ADD',
+            colors: 0x0000FF,
+            scale: .3
+            
+        })
+        emitters.emitting =  true
+        emitters.explode(30)
+        playerBlue.setAlpha(0)
+        this.resetBoard()
             // reset mechanic
         })
 
         this.physics.add.collider(this.playerOrange, this.blueDisksGroup,(playerOrange,blueDisksGroup) =>{
             console.log("SUCCESS orange player hit by blue disk")
-            // add death code here
-
+            this.sfxDeathBoom.play()
             // reset mechanic
+            const emitters = this.add.particles(playerOrange.x,playerOrange.y,'hexOrange',{
+                emitting: false,
+                speed:{min: 50, max: 200},
+                advance:2000,
+                lifespan: 700,
+                sortOrderAsc: true,
+                blendMode: 'ADD',
+                scale: { start: 0.2, end: .5 },
+                colors: 0xFFA500,
+                scale: .3
+                
+            })
+            emitters.emitting =  true
+            emitters.explode(30)
+            playerOrange.setAlpha(0)
+            this.resetBoard()
         })
            
         
@@ -169,6 +202,16 @@ class Play extends Phaser.Scene {
 
     isValidTile(player, board, x, y) { // Basically, if the tile that is being checked exists on the screen then it is valid. Otherwise no.
         return board.validTiles.some(tile => tile.x === x && tile.y === y) && (player.x >= 20 && player.x <= 780 && player.y >= 20 && player.y <= 580);
+    }
+    resetBoard()
+    {
+        
+        this.playerBlue.moveTo(9,26)
+        this.playerOrange.moveTo(14,18)
+        this.playerBlue.setAlpha(1)
+        this.playerOrange.setAlpha(1)
+        //insert code to reset board 
+        
     }
     update(){
         if(this.orangeDiskGroup !=  null)
@@ -180,4 +223,5 @@ class Play extends Phaser.Scene {
         this.physics.collide(this.playerOrange,this.blueDiskGroup)
         }
     }
+    
 }
