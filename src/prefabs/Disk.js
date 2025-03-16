@@ -26,12 +26,13 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
         this.body.offset.x = this.height/4
         this.body.offset.y = this.width/4
         this.body.onCollide = true // allows collisions
+        
 
 
         this.sourceBoard = sourceBoard;
         this.targetBoard = targetBoard;
 
-        this.setScale(0.25);
+        this.setScale(0.30);
         this.setOrigin(0.5, 0.5);
 
         this.setSize(this.width, this.height);

@@ -11,7 +11,7 @@ class Play extends Phaser.Scene {
     create() {
         this.sfxBackground = this.sound.add('sfx-background')
         this.sfxBackground.setLoop(true)
-        this.sfxBackground.setVolume(.6)
+        this.sfxBackground.setVolume(.25)
         this.sfxBackground.play()
         this.sfxDeathBoom = this.sound.add('sfx-deathBoom')
         this.sfxDeathBoom.setVolume(1)
@@ -76,29 +76,64 @@ class Play extends Phaser.Scene {
             this.add.image(worldXY.x, worldXY.y, 'hexOrange').setScale(0.5, 0.25).setOrigin(0.5);
         }
 
-        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_player_temp',0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
-        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_player_temp',0xFFA500); // Orange player with orange color code
+        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_stand',0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
+        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_stand',0xFFA500); // Orange player with orange color code
         this.blueDisksGroup = this.add.group()
         this.orangeDisksGroup = this.add.group()
        //  this.orangeDisks = new Group(this.physics,this.scene)
 
         //makes scale larger 
-        this.playerBlue.setScale(1.5)
-        this.playerOrange.setScale(1.5)
+        this.playerBlue.setScale(2.5)
+        this.playerOrange.setScale(2.5)
         this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
-            if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(0) }
+            if (this.playerBlue.mode == "move") { 
+                this.playerBlue.moveDirection(0) 
+                this.playerBlue.anims.play('B_E_Walk_Animation',true)
+            }
             else { this.playerBlue.changeDiskAngle("d"); }
         });
+        this.input.keyboard.on('keyup-D', () => {
+            { 
+                this.playerBlue.anims.stop()
+                this.playerBlue.setTexture('b_stand')
+            }
+         });
         this.input.keyboard.on('keydown-W', () => {
-            if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(2) }
+            if (this.playerBlue.mode == "move") { 
+                this.playerBlue.moveDirection(2) 
+                this.playerBlue.anims.play('B_NW_Walk_Animation',true)
+            }
         });
+        this.input.keyboard.on('keyup-W', () => {
+            { 
+            this.playerBlue.anims.stop()
+            this.playerBlue.setTexture('b_stand')
+            }
+         });
         this.input.keyboard.on('keydown-A', () => {
-            if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(3) }
+            if (this.playerBlue.mode == "move") { 
+                this.playerBlue.moveDirection(3) 
+                this.playerBlue.anims.play('B_W_Walk_Animation',true)
+            }
             else { this.playerBlue.changeDiskAngle("a"); }
         });
-        this.input.keyboard.on('keydown-S', () => {
-            if (this.playerBlue.mode == "move") { this.playerBlue.moveDirection(4) }
+        this.input.keyboard.on('keyup-A', () => {
+           { this.playerBlue.anims.stop()
+            this.playerBlue.setTexture('b_stand')
+           }
         });
+        this.input.keyboard.on('keydown-S', () => {
+            if (this.playerBlue.mode == "move") { 
+                this.playerBlue.moveDirection(4) 
+                this.playerBlue.anims.play("B_SE_Walk_Animation", true)
+            }
+        });
+        this.input.keyboard.on('keyup-S', () => {
+            { 
+                this.playerBlue.anims.stop()
+                this.playerBlue.setTexture('b_stand')
+            }
+         });
         this.input.keyboard.on('keydown-E', () => {
             if (this.playerBlue.mode == "move") {
                 this.playerBlue.toggleMode();
@@ -115,19 +150,51 @@ class Play extends Phaser.Scene {
         });
 
         this.input.keyboard.on('keydown-L', () => {
-            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(0) }
+            if (this.playerOrange.mode == "move") { 
+                this.playerOrange.moveDirection(0) 
+                this.playerOrange.anims.play('O_E_Walk_Animation')
+            }
             else { this.playerOrange.changeDiskAngle("d"); }
         });
+        this.input.keyboard.on('keyup-L', () => {
+            { this.playerOrange.anims.stop()
+            this.playerOrange.setTexture('o_stand')
+            }
+         });
         this.input.keyboard.on('keydown-I', () => {
-            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(2) }
+            if (this.playerOrange.mode == "move") { 
+                this.playerOrange.moveDirection(2) 
+                this.playerOrange.anims.play('O_NW_Walk_Animation',true)
+            }
         });
+        this.input.keyboard.on('keyup-I', () => {
+            { this.playerOrange.anims.stop()
+              this.playerOrange.setTexture('o_stand')
+            }
+         });
         this.input.keyboard.on('keydown-J', () => {
-            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(3) }
+            if (this.playerOrange.mode == "move") { 
+                this.playerOrange.moveDirection(3) 
+                this.playerOrange.anims.play('O_W_Walk_Animation')
+            }
             else { this.playerOrange.changeDiskAngle("a"); }
         });
+        this.input.keyboard.on('keyup-J', () => {
+            { this.playerOrange.anims.stop()
+                this.playerOrange.setTexture('o_stand')
+            }
+         });
         this.input.keyboard.on('keydown-K', () => {
-            if (this.playerOrange.mode == "move") { this.playerOrange.moveDirection(4) }
+            if (this.playerOrange.mode == "move") { 
+                this.playerOrange.moveDirection(4) 
+                this.playerOrange.anims.play('O_SW_Walk_Animation',true)
+            }
         });
+        this.input.keyboard.on('keyup-K', () => {
+            { this.playerOrange.anims.stop()
+            this.playerOrange.setTexture('o_stand')
+            }
+         });
         this.input.keyboard.on('keydown-U', () => {
             if (this.playerOrange.mode == "move") {
                 this.playerOrange.toggleMode();
@@ -154,6 +221,8 @@ class Play extends Phaser.Scene {
         // create disk collider 
         this.physics.add.collider(this.playerBlue, this.orangeDisksGroup,(playerBlue,orangeDisksGroup) =>{
             console.log("SUCCESS blue player hit by orange disk")
+            this.playerOrange.score += 1
+            console.log("Blue score: ",this.playerOrange.score)
             this.sfxDeathBoom.play()
             // add death code here
           const emitters = this.add.particles(playerBlue.x,playerBlue.y,'hexBlue',{
@@ -177,6 +246,8 @@ class Play extends Phaser.Scene {
 
         this.physics.add.collider(this.playerOrange, this.blueDisksGroup,(playerOrange,blueDisksGroup) =>{
             console.log("SUCCESS orange player hit by blue disk")
+            this.playerBlue.score += 1
+            console.log("Blue score: ",this.playerBlue.score)
             this.sfxDeathBoom.play()
             // reset mechanic
             const emitters = this.add.particles(playerOrange.x,playerOrange.y,'hexOrange',{

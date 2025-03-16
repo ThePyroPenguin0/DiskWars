@@ -5,9 +5,11 @@ class Player extends Phaser.Physics.Arcade.Sprite  {
         // adds physics body to disk
         scene.physics.add.existing(this) 
         this.body.setSize(this.width/4,this.height/2)
-        //this.body.offset.y = 10
+        this.body.setOffset(9,0)
+        //this.setOrigin(0,0)
         this.body.setImmovable()
         this.body.onCollide = true
+        this.score = 0;
         if(color == 0x0000FF){
             this.color = "blue";
             this.throwAngle = -45;
@@ -22,7 +24,7 @@ class Player extends Phaser.Physics.Arcade.Sprite  {
 
         let worldXY = board.tileXYToWorldXY(startX, startY);
         this.setPosition(worldXY.x, worldXY.y);
-        this.sprite = scene.add.circle(worldXY.x, worldXY.y +30, 8, color);
+        this.sprite = scene.add.circle(worldXY.x, worldXY.y , 8, color);
 
         this.targetTileXY = { x: startX, y: startY };
 

@@ -33,7 +33,7 @@ class Load extends Phaser.Scene{
             startFrame: 0,
             endFrame: 6
         })
-        this.load.spritesheet('blue_nw_walk', './assets/blassets/bule_NW_walk_animation.pngue_NW_walk_animation.png',{
+        this.load.spritesheet('blue_nw_walk', './assets/blue_NW_walk_animation.png',{
             frameWidth: 32,
             frameHeight: 32,
             startFrame: 0,
@@ -45,8 +45,56 @@ class Load extends Phaser.Scene{
             startFrame: 0,
             endFrame: 6
         })
-        this.load.image('o_player_temp','./assets/o_player_temp.png')
-        this.load.image('b_player_temp','./assets/b_player_temp.png')
+        this.load.spritesheet('blue_se_walk','./assets/blue_SE_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 6
+        })
+        this.load.spritesheet('blue_sw_walk','./assets/blue_SW_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 6
+        })
+        this.load.spritesheet('orange_se_walk','./assets/orange_SE_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 6
+        })
+        this.load.spritesheet('orange_sw_walk','./assets/orange_SW_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 6
+        })
+        this.load.spritesheet('blue_e_walk','./assets/blue_E_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 7
+        })
+        this.load.spritesheet('blue_w_walk','./assets/blue_W_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 7
+        })
+        this.load.spritesheet('orange_w_walk','./assets/orange_W_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 7
+        })
+        this.load.spritesheet('orange_e_walk','./assets/orange_E_walk_animation.png',{
+            frameWidth:32,
+            frameHeight: 32,
+            startFrame: 0,
+            endFrame: 7
+        })
+        this.load.image('b_stand','./assets/blue_e_stand.png')
+        this.load.image('o_stand','./assets/orange_w_stand.png')
         this.load.image('hexBlue', 'assets/hexBlue.png');
         this.load.image('hexOrange', 'assets/hexOrange.png');
         this.load.image('diskBlue', './assets/diskBlue.png');
@@ -59,25 +107,73 @@ class Load extends Phaser.Scene{
             key: 'O_NW_Walk_Animation',
             frames: this.anims.generateFrameNames('orange_nw_walk',{start: 0, end: 6, first:0}),
             repeat: -1,
-            frameRate: 15
+            frameRate: 10
         })
         this.anims.create({
             key: 'O_NE_Walk_Animation',
             frames: this.anims.generateFrameNames('orange_ne_walk',{start: 0, end: 6, first:0}),
             repeat: -1,
-            frameRate: 15
+            frameRate: 10
         })
         this.anims.create({
             key: 'B_NW_Walk_Animation',
             frames: this.anims.generateFrameNames('blue_nw_walk',{start: 0, end: 6, first:0}),
             repeat: -1,
-            frameRate: 15
+            frameRate: 10
         })
         this.anims.create({
             key: 'B_NE_Walk_Animation',
             frames: this.anims.generateFrameNames('blue_ne_walk',{start: 0, end: 6, first:0}),
             repeat: -1,
-            frameRate: 15
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'B_SE_Walk_Animation',
+            frames: this.anims.generateFrameNames('blue_se_walk',{start: 0, end: 6, first:0}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'B_SW_Walk_Animation',
+            frames: this.anims.generateFrameNames('blue_sw_walk',{start: 0, end: 6, first:0}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'O_SW_Walk_Animation',
+            frames: this.anims.generateFrameNames('orange_sw_walk',{start: 0, end: 6, first:0}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'O_SE_Walk_Animation',
+            frames: this.anims.generateFrameNames('orange_se_walk',{start: 0, end: 6, first:0}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'O_E_Walk_Animation',
+            frames: this.anims.generateFrameNames('orange_e_walk',{start: 0, end: 7, first:0}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'O_W_Walk_Animation',
+            frames: this.anims.generateFrameNames('orange_w_walk',{start: 0, end: 7, first:0}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'B_E_Walk_Animation',
+            frames: this.anims.generateFrameNames('blue_e_walk',{start: 0, end: 7, first:0}),
+            repeat: -1,
+            frameRate: 10
+        })
+        this.anims.create({
+            key: 'B_W_Walk_Animation',
+            frames: this.anims.generateFrameNames('blue_w_walk',{start: 0, end: 7, first:0}),
+            repeat: -1,
+            frameRate: 10
         })
         this.anims.create({
             key: 'backgroundAnim',
