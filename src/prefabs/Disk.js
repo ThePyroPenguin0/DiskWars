@@ -20,9 +20,12 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
         scene.physics.world.enable(this);
 
         scene.add.existing(this);
-        // loads physics body into scene 
+        this.setScale(0.30);
+        this.setOrigin(0.5, 0.5);
+
         scene.physics.add.existing(this)
-        this.body.setCircle(this.width / 16)
+        this.body.setSize(this.width, this.height)
+        this.body.setCircle(this.width / 4)
         this.body.offset.x = this.height / 4
         this.body.offset.y = this.width / 4
         this.body.onCollide = true
@@ -32,10 +35,9 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
         this.sourceBoard = sourceBoard;
         this.targetBoard = targetBoard;
 
-        this.setScale(0.30);
-        this.setOrigin(0.5, 0.5);
 
-        this.setSize(this.width, this.height);
+
+        // this.setSize(this.width, this.height);
 
         this.initialSpeed = 1000;
         this.decelerationFactor = 0.98;
@@ -49,8 +51,15 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
             Math.sin(radians) * this.initialSpeed
         );
 
-        this.setBounce(1);
+        this.setBounce(1); // Enable bounce for world bounds
         this.setCollideWorldBounds(true);
+
+        // Disable bounce for other collisions
+        this.scene.physics.world.on('worldbounds', (body) => {
+            if (body.gameObject === this) {
+                this.setBounce(0);
+            }
+        });
 
         this.scene.events.on('update', this.slowDownDisk, this);
 
@@ -68,5 +77,6 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
             this.body.velocity.x * this.decelerationFactor,
             this.body.velocity.y * this.decelerationFactor
         );
+        this.rotation += 5;
     }
 }

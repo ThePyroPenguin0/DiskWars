@@ -98,8 +98,8 @@ class Play extends Phaser.Scene {
             tileSprite.body.setOffset(9, -9)
         }
 
-        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_stand', 0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
-        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_stand', 0xFFA500); // Orange player with orange color code
+        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_stand', 0x0000FF);
+        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_stand', 0xFFA500);
         this.blueDisksGroup = this.add.group();
         this.orangeDisksGroup = this.add.group();
 
@@ -293,9 +293,8 @@ class Play extends Phaser.Scene {
             playerOrange.setAlpha(0)
             this.resetBoard()
         })
-
-        this.physics.add.collider(this.blueDisksGroup, this.orangeTilesGroup, this.handleDiskTileCollision, null, this);
-        this.physics.add.collider(this.orangeDisksGroup, this.blueTilesGroup, this.handleDiskTileCollision, null, this);
+        this.physics.add.overlap(this.blueDisksGroup, this.orangeTilesGroup, this.handleDiskTileOverlap, null, this);
+        this.physics.add.overlap(this.orangeDisksGroup, this.blueTilesGroup, this.handleDiskTileOverlap, null, this);
     }
 
     isValidTile(player, board, x, y) { // Basically, if the tile that is being checked exists on the screen then it is valid. Otherwise no.
@@ -312,16 +311,15 @@ class Play extends Phaser.Scene {
     update() {
     }
 
-    handleDiskTileCollision(disk, tile) {
-        console.log("Disk collided with tile");
+    handleDiskTileOverlap(disk, tile) {
+        console.log("Disk overlapped with tile");
         this.destroyHexesOnContact(disk);
     }
 
     destroyHexesOnContact(object) {
-        if (object.texture.key === 'diskOrange') {
+        if (object.texture.key == 'diskOrange') {
             this.blueTilesGroup.getChildren().forEach(tile => {
                 if (this.physics.overlap(object, tile)) {
-                    console.log("collision detected (1)");
                     tile.setVisible(false);
                     tile.setActive(false);
                     tile.setImmovable(false);
@@ -330,13 +328,12 @@ class Play extends Phaser.Scene {
             });
         }
 
-        if (object.texture.key === 'diskBlue') {
+        if (object.texture.key == 'diskBlue') {
             this.orangeTilesGroup.getChildren().forEach(tile => {
                 if (this.physics.overlap(object, tile)) {
-                    console.log("collision detected (2)");
                     tile.setVisible(false);
                     tile.setActive(false);
-                    tile.setImmovable(false);     
+                    tile.setImmovable(false);
                     tile.destroy();
                 }
             });
