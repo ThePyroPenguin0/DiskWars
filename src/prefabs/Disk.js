@@ -1,20 +1,20 @@
 
 class Disk extends Phaser.Physics.Arcade.Sprite {
-  constructor(scene, sourceBoard, targetBoard, startTileXY, throwAngle, color) {
-  let startWorldXY = sourceBoard.tileXYToWorldXY(startTileXY.x, startTileXY.y);
+    constructor(scene, sourceBoard, targetBoard, startTileXY, throwAngle, color) {
+        let startWorldXY = sourceBoard.tileXYToWorldXY(startTileXY.x, startTileXY.y);
         if (color == "blue") {
-         
+
             super(scene, startWorldXY.x, startWorldXY.y, "diskBlue");
             // detects if blue player threw blue disk, adds it to blueDisk group used for collisions
             this.scene.blueDisksGroup.add(this)
-            console.log("blue disk added to blueDisk group")
-            
+            // console.log("blue disk added to blueDisk group")
+
         }
-        else{
+        else {
             super(scene, startWorldXY.x, startWorldXY.y, "diskOrange");
             // detects if orange player threw orange disk, adds it to orangeDisk group used for collisions
             this.scene.orangeDisksGroup.add(this)
-            console.log("orange disk added to orangeDisk group")
+            // console.log("orange disk added to orangeDisk group")
         }
         this.throwAngle = throwAngle;
         scene.physics.world.enable(this);
@@ -22,11 +22,11 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         // loads physics body into scene 
         scene.physics.add.existing(this)
-        this.body.setCircle(this.width/4)
-        this.body.offset.x = this.height/4
-        this.body.offset.y = this.width/4
-        this.body.onCollide = true // allows collisions
-        
+        this.body.setCircle(this.width / 16)
+        this.body.offset.x = this.height / 4
+        this.body.offset.y = this.width / 4
+        this.body.onCollide = true
+
 
 
         this.sourceBoard = sourceBoard;
@@ -37,7 +37,7 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
 
         this.setSize(this.width, this.height);
 
-        this.initialSpeed = 1000; 
+        this.initialSpeed = 1000;
         this.decelerationFactor = 0.98;
     }
 
@@ -56,7 +56,6 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.time.delayedCall(1500, () => {
             this.destroy();
-            console.log("Disk destroyed after 1000ms.");
         });
     }
 
