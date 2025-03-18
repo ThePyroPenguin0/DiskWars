@@ -11,7 +11,7 @@ class Menu extends Phaser.Scene {
         this.background.play('backgroundAnim');
         
         this.input.keyboard.on('keydown-ENTER', () => {
-            this.scene.start('playScene');
+            this.scene.start('playScene', { scoreBlue: 0, scoreOrange: 0, timeRemaining: 60 });
         });
     }
 
