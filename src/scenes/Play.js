@@ -47,13 +47,13 @@ class Play extends Phaser.Scene {
 
         // Create separate groups for blue and orange tiles
         this.blueTilesGroup = this.physics.add.group({
-            key: "hexBlue",
+            //key: "hexBlue1",
             immovable: true,
             classType: Phaser.Physics.Arcade.Sprite
         });
 
         this.orangeTilesGroup = this.physics.add.group({
-            key: "hexOrange",
+            //key: "hexOrange2",
             immovable: true,
             classType: Phaser.Physics.Arcade.Sprite
         });

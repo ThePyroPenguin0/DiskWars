@@ -5,8 +5,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // adds physics body to disk
         scene.physics.add.existing(this)
         this.body.setSize(this.width*0.27, this.height)
+        this.setOrigin(0.5,1)
         this.body.setOffset(11,0)
-        //this.setOrigin(0,0)
         this.body.setImmovable()
         this.body.onCollide = true
         this.score = 0;
@@ -162,7 +162,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.opposingBoard = this.scene.playerBlue.board;
         }
-        this.lineGraphics.strokeLineShape(new Phaser.Geom.Line(worldStart.x, worldStart.y, worldEndX, worldEndY));
+        this.lineGraphics.strokeLineShape(new Phaser.Geom.Line(worldStart.x, worldStart.y - 50, worldEndX, worldEndY));
         console.log(`Drawing line from (${worldStart.x}, ${worldStart.y}) to (${worldEndX}, ${worldEndY}) in direction ${this.throwAngle}°`);
     }
 
