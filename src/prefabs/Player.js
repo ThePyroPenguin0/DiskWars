@@ -40,6 +40,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         };
     }
 
+    isTileActive(x, y) {
+        let worldXY = this.board.tileXYToWorldXY(x, y);
+        let tileGroup = this.color === "blue" ? this.scene.blueTilesGroup : this.scene.orangeTilesGroup;
+        let tile = tileGroup.getChildren().find(tile => tile.x === worldXY.x && tile.y === worldXY.y);
+        return tile && tile.active;
+    }
+
     moveTo(x, y) {
         let worldXY = this.board.tileXYToWorldXY(x, y);
 
@@ -48,7 +55,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             worldXY.x <= this.screenBounds.left ||
             worldXY.x >= this.screenBounds.right ||
             worldXY.y <= this.screenBounds.top ||
-            worldXY.y >= this.screenBounds.bottom
+            worldXY.y >= this.screenBounds.bottom ||
+            !this.isTileActive(x, y)
         ) {
             console.log(`Illegal traversal detected. Cannot move from (${this.tileXY.x}, ${this.tileXY.y}) to forbidden tile (${x}, ${y}).`);
             return;
