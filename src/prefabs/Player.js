@@ -154,7 +154,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         } else {
             this.opposingBoard = this.scene.playerBlue.board;
         }
-        this.lineGraphics.strokeLineShape(new Phaser.Geom.Line(worldStart.x, worldStart.y, worldEndX, worldEndY));
+        this.lineGraphics.strokeLineShape(new Phaser.Geom.Line(worldStart.x, worldStart.y - 50, worldEndX, worldEndY));
         console.log(`Drawing line from (${worldStart.x}, ${worldStart.y}) to (${worldEndX}, ${worldEndY}) in direction ${this.throwAngle}°`);
     }
 
