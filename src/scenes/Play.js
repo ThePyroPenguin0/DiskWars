@@ -120,56 +120,65 @@ class Play extends Phaser.Scene {
         //makes scale larger 
         this.playerBlue.setScale(2.5)
         this.playerOrange.setScale(2.5)
-        this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
-            if (this.playerBlue.mode == "move") {
-                this.playerBlue.moveDirection(0)
-                this.playerBlue.anims.play('B_E_Walk_Animation', true)
-            }
-            else { this.playerBlue.changeDiskAngle("d"); }
+
+        // player movement keys: 
+        this.blueKeys = this.input.keyboard.addKeys({
+            up: 'W', down: 'S', left: 'A', right: 'D',
         });
-        this.input.keyboard.on('keyup-D', () => {
-            {
-                this.playerBlue.anims.stop()
-                this.playerBlue.setTexture('b_stand')
-            }
+    
+        this.orangeKeys = this.input.keyboard.addKeys({
+            up: 'I', down: 'K', left: 'J', right: 'L',
         });
-        this.input.keyboard.on('keydown-W', () => {
-            if (this.playerBlue.mode == "move") {
-                this.playerBlue.moveDirection(2)
-                this.playerBlue.anims.play('B_NW_Walk_Animation', true)
-            }
-        });
-        this.input.keyboard.on('keyup-W', () => {
-            {
-                this.playerBlue.anims.stop()
-                this.playerBlue.setTexture('b_stand')
-            }
-        });
-        this.input.keyboard.on('keydown-A', () => {
-            if (this.playerBlue.mode == "move") {
-                this.playerBlue.moveDirection(3)
-                this.playerBlue.anims.play('B_W_Walk_Animation', true)
-            }
-            else { this.playerBlue.changeDiskAngle("a"); }
-        });
-        this.input.keyboard.on('keyup-A', () => {
-            {
-                this.playerBlue.anims.stop()
-                this.playerBlue.setTexture('b_stand')
-            }
-        });
-        this.input.keyboard.on('keydown-S', () => {
-            if (this.playerBlue.mode == "move") {
-                this.playerBlue.moveDirection(4)
-                this.playerBlue.anims.play("B_SE_Walk_Animation", true)
-            }
-        });
-        this.input.keyboard.on('keyup-S', () => {
-            {
-                this.playerBlue.anims.stop()
-                this.playerBlue.setTexture('b_stand')
-            }
-        });
+        // this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
+        //     if (this.playerBlue.mode == "move") {
+        //         this.playerBlue.moveDirection(0)
+        //         this.playerBlue.anims.play('B_E_Walk_Animation', true)
+        //     }
+        //     else { this.playerBlue.changeDiskAngle("d"); }
+        // });
+        // this.input.keyboard.on('keyup-D', () => {
+        //     {
+        //         this.playerBlue.anims.stop()
+        //         this.playerBlue.setTexture('b_stand')
+        //     }
+        // });
+        // this.input.keyboard.on('keydown-W', () => {
+        //     if (this.playerBlue.mode == "move") {
+        //         this.playerBlue.moveDirection(2)
+        //         this.playerBlue.anims.play('B_NW_Walk_Animation', true)
+        //     }
+        // });
+        // this.input.keyboard.on('keyup-W', () => {
+        //     {
+        //         this.playerBlue.anims.stop()
+        //         this.playerBlue.setTexture('b_stand')
+        //     }
+        // });
+        // this.input.keyboard.on('keydown-A', () => {
+        //     if (this.playerBlue.mode == "move") {
+        //         this.playerBlue.moveDirection(3)
+        //         this.playerBlue.anims.play('B_W_Walk_Animation', true)
+        //     }
+        //     else { this.playerBlue.changeDiskAngle("a"); }
+        // });
+        // this.input.keyboard.on('keyup-A', () => {
+        //     {
+        //         this.playerBlue.anims.stop()
+        //         this.playerBlue.setTexture('b_stand')
+        //     }
+        // });
+        // this.input.keyboard.on('keydown-S', () => {
+        //     if (this.playerBlue.mode == "move") {
+        //         this.playerBlue.moveDirection(4)
+        //         this.playerBlue.anims.play("B_SE_Walk_Animation", true)
+        //     }
+        // });
+        // this.input.keyboard.on('keyup-S', () => {
+        //     {
+        //         this.playerBlue.anims.stop()
+        //         this.playerBlue.setTexture('b_stand')
+        //     }
+        // });
         this.input.keyboard.on('keydown-E', () => {
             if (this.playerBlue.mode == "move") {
                 this.playerBlue.toggleMode();
@@ -185,56 +194,56 @@ class Play extends Phaser.Scene {
 
         });
 
-        this.input.keyboard.on('keydown-L', () => {
-            if (this.playerOrange.mode == "move") {
-                this.playerOrange.moveDirection(0)
-                this.playerOrange.anims.play('O_E_Walk_Animation')
-            }
-            else { this.playerOrange.changeDiskAngle("d"); }
-        });
-        this.input.keyboard.on('keyup-L', () => {
-            {
-                this.playerOrange.anims.stop()
-                this.playerOrange.setTexture('o_stand')
-            }
-        });
-        this.input.keyboard.on('keydown-I', () => {
-            if (this.playerOrange.mode == "move") {
-                this.playerOrange.moveDirection(2)
-                this.playerOrange.anims.play('O_NW_Walk_Animation', true)
-            }
-        });
-        this.input.keyboard.on('keyup-I', () => {
-            {
-                this.playerOrange.anims.stop()
-                this.playerOrange.setTexture('o_stand')
-            }
-        });
-        this.input.keyboard.on('keydown-J', () => {
-            if (this.playerOrange.mode == "move") {
-                this.playerOrange.moveDirection(3)
-                this.playerOrange.anims.play('O_W_Walk_Animation')
-            }
-            else { this.playerOrange.changeDiskAngle("a"); }
-        });
-        this.input.keyboard.on('keyup-J', () => {
-            {
-                this.playerOrange.anims.stop()
-                this.playerOrange.setTexture('o_stand')
-            }
-        });
-        this.input.keyboard.on('keydown-K', () => {
-            if (this.playerOrange.mode == "move") {
-                this.playerOrange.moveDirection(4)
-                this.playerOrange.anims.play('O_SW_Walk_Animation', true)
-            }
-        });
-        this.input.keyboard.on('keyup-K', () => {
-            {
-                this.playerOrange.anims.stop()
-                this.playerOrange.setTexture('o_stand')
-            }
-        });
+        // this.input.keyboard.on('keydown-L', () => {
+        //     if (this.playerOrange.mode == "move") {
+        //         this.playerOrange.moveDirection(0)
+        //         this.playerOrange.anims.play('O_E_Walk_Animation')
+        //     }
+        //     else { this.playerOrange.changeDiskAngle("d"); }
+        // });
+        // this.input.keyboard.on('keyup-L', () => {
+        //     {
+        //         this.playerOrange.anims.stop()
+        //         this.playerOrange.setTexture('o_stand')
+        //     }
+        // });
+        // this.input.keyboard.on('keydown-I', () => {
+        //     if (this.playerOrange.mode == "move") {
+        //         this.playerOrange.moveDirection(2)
+        //         this.playerOrange.anims.play('O_NW_Walk_Animation', true)
+        //     }
+        // });
+        // this.input.keyboard.on('keyup-I', () => {
+        //     {
+        //         this.playerOrange.anims.stop()
+        //         this.playerOrange.setTexture('o_stand')
+        //     }
+        // });
+        // this.input.keyboard.on('keydown-J', () => {
+        //     if (this.playerOrange.mode == "move") {
+        //         this.playerOrange.moveDirection(3)
+        //         this.playerOrange.anims.play('O_W_Walk_Animation')
+        //     }
+        //     else { this.playerOrange.changeDiskAngle("a"); }
+        // });
+        // this.input.keyboard.on('keyup-J', () => {
+        //     {
+        //         this.playerOrange.anims.stop()
+        //         this.playerOrange.setTexture('o_stand')
+        //     }
+        // });
+        // this.input.keyboard.on('keydown-K', () => {
+        //     if (this.playerOrange.mode == "move") {
+        //         this.playerOrange.moveDirection(4)
+        //         this.playerOrange.anims.play('O_SW_Walk_Animation', true)
+        //     }
+        // });
+        // this.input.keyboard.on('keyup-K', () => {
+        //     {
+        //         this.playerOrange.anims.stop()
+        //         this.playerOrange.setTexture('o_stand')
+        //     }
+        // });
         this.input.keyboard.on('keydown-U', () => {
             if (this.playerOrange.mode == "move") {
                 this.playerOrange.toggleMode();
@@ -324,6 +333,78 @@ class Play extends Phaser.Scene {
         return board.validTiles.some(tile => tile.x === x && tile.y === y) && (player.x >= 20 && player.x <= 780 && player.y >= 20 && player.y <= 580);
     }
 
+    resetBoard() {
+
+        this.playerBlue.moveTo(10, 10)
+        this.playerOrange.moveTo(10, 20)
+        this.playerBlue.setAlpha(1)
+        this.playerOrange.setAlpha(1)
+
+    }
+    update() {
+        // blue movement keys check
+        if (this.blueKeys.left.isDown) {
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(3)
+                this.playerBlue.anims.play('B_W_Walk_Animation', true)
+            }
+            else { this.playerBlue.changeDiskAngle("a"); }
+        } 
+        else if (this.blueKeys.right.isDown) {
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(0)
+                this.playerBlue.anims.play('B_E_Walk_Animation', true)
+            }
+            else { this.playerBlue.changeDiskAngle("d"); }
+        }
+        else if (this.blueKeys.up.isDown) {
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(2)
+                this.playerBlue.anims.play('B_NW_Walk_Animation', true)
+            }
+        }
+        else if (this.blueKeys.down.isDown) {
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(4)
+                this.playerBlue.anims.play("B_SE_Walk_Animation", true)
+            }
+        } else {
+            this.playerBlue.anims.stop();
+            this.playerBlue.setTexture('b_stand');
+        }
+        // orange movement keys check
+        if (this.orangeKeys.left.isDown) {
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(3)
+                this.playerOrange.anims.play('O_W_Walk_Animation')
+            }
+            else { this.playerOrange.changeDiskAngle("a"); }
+        } 
+        else if (this.orangeKeys.right.isDown) {
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(0)
+                this.playerOrange.anims.play('O_E_Walk_Animation')
+            }
+            else { this.playerOrange.changeDiskAngle("d"); }
+        }
+        else if (this.orangeKeys.up.isDown) {
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(2)
+                this.playerOrange.anims.play('O_NW_Walk_Animation', true)
+            }
+        }
+        else if (this.orangeKeys.down.isDown) {
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(4)
+                this.playerOrange.anims.play('O_SW_Walk_Animation', true)
+            }
+        } else {
+            this.playerOrange.anims.stop();
+            this.playerOrange.setTexture('o_stand');
+        }
+
+    
+    }
     handleDiskTileOverlap(disk, tile) {
         console.log("Disk overlapped with tile");
         this.destroyHexesOnContact(disk);
