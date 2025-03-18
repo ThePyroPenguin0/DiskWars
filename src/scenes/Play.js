@@ -15,6 +15,8 @@ class Play extends Phaser.Scene {
         this.sfxBackground.play()
         this.sfxDeathBoom = this.sound.add('sfx-deathBoom')
         this.sfxDeathBoom.setVolume(1)
+        this.blueDiskThrown = false;
+        this.orangeDiskThrown = false;
         // You don't see the entire board on screen in game? I have some bad news for you...
         let staggeraxis = 'x';
         let staggerindex = 'odd';
@@ -43,97 +45,117 @@ class Play extends Phaser.Scene {
             }
         });
 
-        // What the fuck is an originality? Thank God Rex has such good documentation.
+        // Create separate groups for blue and orange tiles
+        this.blueTilesGroup = this.physics.add.group({
+            //key: "hexBlue1",
+            immovable: true,
+            classType: Phaser.Physics.Arcade.Sprite
+        });
+
+        this.orangeTilesGroup = this.physics.add.group({
+            //key: "hexOrange2",
+            immovable: true,
+            classType: Phaser.Physics.Arcade.Sprite
+        });
+
         let tileXYArray = boardBlue.fit(this.rexBoard.hexagonMap.parallelogram(boardBlue, 0, 15, 30));
         let tileXYArray2 = boardOrange.fit(this.rexBoard.hexagonMap.parallelogram(boardOrange, 0, 15, 30));
 
-        let graphics = this.add.graphics();
-        let graphics2 = this.add.graphics();
+        // let graphics = this.add.graphics();
+        // let graphics2 = this.add.graphics();
 
         boardBlue.validTiles = [];
         boardOrange.validTiles = [];
 
-
         let tileXY;
         for (let i in tileXYArray) {
             tileXY = tileXYArray[i];
-            graphics.strokePoints(boardBlue.getGridPoints(tileXY.x, tileXY.y, true), true);
+            // graphics.strokePoints(boardBlue.getGridPoints(tileXY.x, tileXY.y, true), true);
             boardBlue.validTiles.push(tileXY);
         }
+
         for (let i in tileXYArray2) {
             tileXY = tileXYArray2[i];
-            graphics2.strokePoints(boardOrange.getGridPoints(tileXY.x, tileXY.y, true), true);
+            // graphics2.strokePoints(boardOrange.getGridPoints(tileXY.x, tileXY.y, true), true);
             boardOrange.validTiles.push(tileXY);
         }
 
+        // Add tiles to the blueTilesGroup
         for (let tileXY of tileXYArray) {
             let worldXY = boardBlue.tileXYToWorldXY(tileXY.x, tileXY.y);
-            this.add.image(worldXY.x, worldXY.y, 'hexBlue').setScale(0.5, 0.25).setOrigin(0.5);
+            let tileSprite = this.blueTilesGroup.create(worldXY.x, worldXY.y, 'hexBlue');  // Add to blueTilesGroup
+            tileSprite.setScale(0.5, 0.25).setOrigin(.5);
+            tileSprite.body.setCircle(16)
+            tileSprite.body.setOffset(9, -9)
         }
 
+        // Add tiles to the orangeTilesGroup
         for (let tileXY of tileXYArray2) {
             let worldXY = boardOrange.tileXYToWorldXY(tileXY.x, tileXY.y);
-            this.add.image(worldXY.x, worldXY.y, 'hexOrange').setScale(0.5, 0.25).setOrigin(0.5);
+            let tileSprite = this.orangeTilesGroup.create(worldXY.x, worldXY.y, 'hexOrange');  // Add to orangeTilesGroup
+            tileSprite.setScale(0.5, 0.25).setOrigin(0.5);
+            tileSprite.body.setCircle(16)
+            tileSprite.body.setOffset(9, -9)
         }
 
-        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_stand',0x0000FF); // Blue player with blue color code. Currently used for positioning and for the Disk creation
-        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_stand',0xFFA500); // Orange player with orange color code
-        this.blueDisksGroup = this.add.group()
-        this.orangeDisksGroup = this.add.group()
-       //  this.orangeDisks = new Group(this.physics,this.scene)
+        this.playerBlue = new Player(this, boardBlue, 10, 10, 'b_stand', 0x0000FF);
+        this.playerOrange = new Player(this, boardOrange, 10, 20, 'o_stand', 0xFFA500);
+        this.blueDisksGroup = this.add.group();
+        this.orangeDisksGroup = this.add.group();
 
         //makes scale larger 
         this.playerBlue.setScale(2.5)
         this.playerOrange.setScale(2.5)
         this.input.keyboard.on('keydown-D', () => { // Decided to have hexes but only four movement directions. It actually works surprisingly well.
-            if (this.playerBlue.mode == "move") { 
-                this.playerBlue.moveDirection(0) 
-                this.playerBlue.anims.play('B_E_Walk_Animation',true)
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(0)
+                this.playerBlue.anims.play('B_E_Walk_Animation', true)
             }
             else { this.playerBlue.changeDiskAngle("d"); }
         });
         this.input.keyboard.on('keyup-D', () => {
-            { 
+            {
                 this.playerBlue.anims.stop()
                 this.playerBlue.setTexture('b_stand')
             }
-         });
+        });
         this.input.keyboard.on('keydown-W', () => {
-            if (this.playerBlue.mode == "move") { 
-                this.playerBlue.moveDirection(2) 
-                this.playerBlue.anims.play('B_NW_Walk_Animation',true)
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(2)
+                this.playerBlue.anims.play('B_NW_Walk_Animation', true)
             }
         });
         this.input.keyboard.on('keyup-W', () => {
-            { 
-            this.playerBlue.anims.stop()
-            this.playerBlue.setTexture('b_stand')
+            {
+                this.playerBlue.anims.stop()
+                this.playerBlue.setTexture('b_stand')
             }
-         });
+        });
         this.input.keyboard.on('keydown-A', () => {
-            if (this.playerBlue.mode == "move") { 
-                this.playerBlue.moveDirection(3) 
-                this.playerBlue.anims.play('B_W_Walk_Animation',true)
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(3)
+                this.playerBlue.anims.play('B_W_Walk_Animation', true)
             }
             else { this.playerBlue.changeDiskAngle("a"); }
         });
         this.input.keyboard.on('keyup-A', () => {
-           { this.playerBlue.anims.stop()
-            this.playerBlue.setTexture('b_stand')
-           }
+            {
+                this.playerBlue.anims.stop()
+                this.playerBlue.setTexture('b_stand')
+            }
         });
         this.input.keyboard.on('keydown-S', () => {
-            if (this.playerBlue.mode == "move") { 
-                this.playerBlue.moveDirection(4) 
+            if (this.playerBlue.mode == "move") {
+                this.playerBlue.moveDirection(4)
                 this.playerBlue.anims.play("B_SE_Walk_Animation", true)
             }
         });
         this.input.keyboard.on('keyup-S', () => {
-            { 
+            {
                 this.playerBlue.anims.stop()
                 this.playerBlue.setTexture('b_stand')
             }
-         });
+        });
         this.input.keyboard.on('keydown-E', () => {
             if (this.playerBlue.mode == "move") {
                 this.playerBlue.toggleMode();
@@ -150,51 +172,55 @@ class Play extends Phaser.Scene {
         });
 
         this.input.keyboard.on('keydown-L', () => {
-            if (this.playerOrange.mode == "move") { 
-                this.playerOrange.moveDirection(0) 
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(0)
                 this.playerOrange.anims.play('O_E_Walk_Animation')
             }
             else { this.playerOrange.changeDiskAngle("d"); }
         });
         this.input.keyboard.on('keyup-L', () => {
-            { this.playerOrange.anims.stop()
-            this.playerOrange.setTexture('o_stand')
+            {
+                this.playerOrange.anims.stop()
+                this.playerOrange.setTexture('o_stand')
             }
-         });
+        });
         this.input.keyboard.on('keydown-I', () => {
-            if (this.playerOrange.mode == "move") { 
-                this.playerOrange.moveDirection(2) 
-                this.playerOrange.anims.play('O_NW_Walk_Animation',true)
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(2)
+                this.playerOrange.anims.play('O_NW_Walk_Animation', true)
             }
         });
         this.input.keyboard.on('keyup-I', () => {
-            { this.playerOrange.anims.stop()
-              this.playerOrange.setTexture('o_stand')
+            {
+                this.playerOrange.anims.stop()
+                this.playerOrange.setTexture('o_stand')
             }
-         });
+        });
         this.input.keyboard.on('keydown-J', () => {
-            if (this.playerOrange.mode == "move") { 
-                this.playerOrange.moveDirection(3) 
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(3)
                 this.playerOrange.anims.play('O_W_Walk_Animation')
             }
             else { this.playerOrange.changeDiskAngle("a"); }
         });
         this.input.keyboard.on('keyup-J', () => {
-            { this.playerOrange.anims.stop()
+            {
+                this.playerOrange.anims.stop()
                 this.playerOrange.setTexture('o_stand')
             }
-         });
+        });
         this.input.keyboard.on('keydown-K', () => {
-            if (this.playerOrange.mode == "move") { 
-                this.playerOrange.moveDirection(4) 
-                this.playerOrange.anims.play('O_SW_Walk_Animation',true)
+            if (this.playerOrange.mode == "move") {
+                this.playerOrange.moveDirection(4)
+                this.playerOrange.anims.play('O_SW_Walk_Animation', true)
             }
         });
         this.input.keyboard.on('keyup-K', () => {
-            { this.playerOrange.anims.stop()
-            this.playerOrange.setTexture('o_stand')
+            {
+                this.playerOrange.anims.stop()
+                this.playerOrange.setTexture('o_stand')
             }
-         });
+        });
         this.input.keyboard.on('keydown-U', () => {
             if (this.playerOrange.mode == "move") {
                 this.playerOrange.toggleMode();
@@ -214,85 +240,103 @@ class Play extends Phaser.Scene {
             this.scene.start('menuScene');
         });
         // turns on physics debug mode
-         this.input.keyboard.on('keydown-G', function() {
-             this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
-             this.physics.world.debugGraphic.clear()
+        this.input.keyboard.on('keydown-G', function () {
+            this.physics.world.drawDebug = this.physics.world.drawDebug ? false : true
+            this.physics.world.debugGraphic.clear()
         }, this)
         // create disk collider 
-        this.physics.add.collider(this.playerBlue, this.orangeDisksGroup,(playerBlue,orangeDisksGroup) =>{
+        this.physics.add.collider(this.playerBlue, this.orangeDisksGroup, (playerBlue, orangeDisksGroup) => {
             console.log("SUCCESS blue player hit by orange disk")
             this.playerOrange.score += 1
-            console.log("Blue score: ",this.playerOrange.score)
+            console.log("Blue score: ", this.playerOrange.score)
             this.sfxDeathBoom.play()
             // add death code here
-          const emitters = this.add.particles(playerBlue.x,playerBlue.y,'hexBlue',{
-            emitting: false,
-            speed:{min: 50, max: 200},
-            advance:2000,
-            lifespan: 700,
-            sortOrderAsc: true,
-            scale: { start: 0.2, end: .5 },
-            blendMode: 'ADD',
-            colors: 0x0000FF,
-            scale: .3
-            
-        })
-        emitters.emitting =  true
-        emitters.explode(30)
-        playerBlue.setAlpha(0)
-        this.resetBoard()
+            const emitters = this.add.particles(playerBlue.x, playerBlue.y, 'hexBlue', {
+                emitting: false,
+                speed: { min: 50, max: 200 },
+                advance: 2000,
+                lifespan: 700,
+                sortOrderAsc: true,
+                scale: { start: 0.2, end: .5 },
+                blendMode: 'ADD',
+                colors: 0x0000FF,
+                scale: .3
+
+            })
+            emitters.emitting = true
+            emitters.explode(30)
+            playerBlue.setAlpha(0)
+            this.resetBoard()
             // reset mechanic
         })
 
-        this.physics.add.collider(this.playerOrange, this.blueDisksGroup,(playerOrange,blueDisksGroup) =>{
+        this.physics.add.collider(this.playerOrange, this.blueDisksGroup, (playerOrange, blueDisksGroup) => {
             console.log("SUCCESS orange player hit by blue disk")
             this.playerBlue.score += 1
-            console.log("Blue score: ",this.playerBlue.score)
+            console.log("Blue score: ", this.playerBlue.score)
             this.sfxDeathBoom.play()
             // reset mechanic
-            const emitters = this.add.particles(playerOrange.x,playerOrange.y,'hexOrange',{
+            const emitters = this.add.particles(playerOrange.x, playerOrange.y, 'hexOrange', {
                 emitting: false,
-                speed:{min: 50, max: 200},
-                advance:2000,
+                speed: { min: 50, max: 200 },
+                advance: 2000,
                 lifespan: 700,
                 sortOrderAsc: true,
                 blendMode: 'ADD',
                 scale: { start: 0.2, end: .5 },
                 colors: 0xFFA500,
                 scale: .3
-                
+
             })
-            emitters.emitting =  true
+            emitters.emitting = true
             emitters.explode(30)
             playerOrange.setAlpha(0)
             this.resetBoard()
         })
-           
-        
+        this.physics.add.overlap(this.blueDisksGroup, this.orangeTilesGroup, this.handleDiskTileOverlap, null, this);
+        this.physics.add.overlap(this.orangeDisksGroup, this.blueTilesGroup, this.handleDiskTileOverlap, null, this);
     }
 
     isValidTile(player, board, x, y) { // Basically, if the tile that is being checked exists on the screen then it is valid. Otherwise no.
         return board.validTiles.some(tile => tile.x === x && tile.y === y) && (player.x >= 20 && player.x <= 780 && player.y >= 20 && player.y <= 580);
     }
-    resetBoard()
-    {
-        
-        this.playerBlue.moveTo(9,26)
-        this.playerOrange.moveTo(14,18)
+    resetBoard() {
+
+        this.playerBlue.moveTo(10, 10)
+        this.playerOrange.moveTo(10, 20)
         this.playerBlue.setAlpha(1)
         this.playerOrange.setAlpha(1)
-        //insert code to reset board 
-        
+
     }
-    update(){
-        if(this.orangeDiskGroup !=  null)
-        {
-        this.physics.collide(this.playerBlue,this.orangeDiskGroup)
+    update() {
+    }
+
+    handleDiskTileOverlap(disk, tile) {
+        console.log("Disk overlapped with tile");
+        this.destroyHexesOnContact(disk);
+    }
+
+    destroyHexesOnContact(object) {
+        if (object.texture.key == 'diskOrange') {
+            this.blueTilesGroup.getChildren().forEach(tile => {
+                if (this.physics.overlap(object, tile)) {
+                    tile.setVisible(false);
+                    tile.setActive(false);
+                    tile.setImmovable(false);
+                    tile.destroy();
+                }
+            });
         }
-        if(this.blueDiskGroup != null)
-        {
-        this.physics.collide(this.playerOrange,this.blueDiskGroup)
+
+        if (object.texture.key == 'diskBlue') {
+            this.orangeTilesGroup.getChildren().forEach(tile => {
+                if (this.physics.overlap(object, tile)) {
+                    tile.setVisible(false);
+                    tile.setActive(false);
+                    tile.setImmovable(false);
+                    tile.destroy();
+                }
+            });
         }
     }
-    
 }
