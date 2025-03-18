@@ -15,6 +15,9 @@ class Load extends Phaser.Scene{
         loadingBar.destroy()
         
     })
+        this.load.audio('sfx-vineboom','./assets/vine-boom.mp3');
+        this.load.audio('sfx-yoda', './assets/lego-yoda-death-sound-effect.mp3');
+        this.load.audio('sfx-tacobell', './assets/taco-bell-bong-sfx.mp3');
         this.load.audio('sfx-background','./assets/synthwave_background.mp3')
         this.load.audio('sfx-deathBoom','./assets/death_boom.mp3')
         this.load.spritesheet('orange_nw_walk', './assets/orange_NW_walk_animation.png',{

@@ -16,6 +16,7 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
             this.scene.orangeDisksGroup.add(this)
             // console.log("orange disk added to orangeDisk group")
         }
+        this.y -= 25;
         this.throwAngle = throwAngle;
         scene.physics.world.enable(this);
 
@@ -39,8 +40,12 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
 
         // this.setSize(this.width, this.height);
 
-        this.initialSpeed = 1000;
+        this.initialSpeed = 1500;
         this.decelerationFactor = 0.98;
+
+        this.setCollideWorldBounds(true);
+        this.body.onWorldBounds = true;
+        scene.physics.world.on('worldbounds', this.handleWorldBoundsCollision, this);
     }
 
     throwDisk() {
@@ -53,13 +58,6 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
 
         this.setBounce(1); // Enable bounce for world bounds
         this.setCollideWorldBounds(true);
-
-        // Disable bounce for other collisions
-        this.scene.physics.world.on('worldbounds', (body) => {
-            if (body.gameObject === this) {
-                this.setBounce(0);
-            }
-        });
 
         this.scene.events.on('update', this.slowDownDisk, this);
 
@@ -78,5 +76,12 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
             this.body.velocity.y * this.decelerationFactor
         );
         this.rotation += 5;
+    }
+
+    handleWorldBoundsCollision(body, up, down, left, right) {
+        if (body.gameObject === this) {
+            this.scene.sound.play('sfx-vineboom'); // Play the collision sound
+            this.scene.cameras.main.shake(200, 0.01);
+        }
     }
 }
