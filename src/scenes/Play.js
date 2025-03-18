@@ -84,7 +84,7 @@ class Play extends Phaser.Scene {
         for (let tileXY of tileXYArray) {
             let worldXY = boardBlue.tileXYToWorldXY(tileXY.x, tileXY.y);
             let tileSprite = this.blueTilesGroup.create(worldXY.x, worldXY.y, 'hexBlue');  // Add to blueTilesGroup
-            tileSprite.setScale(0.5, 0.25).setOrigin(.5);
+            tileSprite.setScale(0.5, 0.25).setOrigin(0.5);
             tileSprite.body.setCircle(16)
             tileSprite.body.setOffset(9, -9)
         }
