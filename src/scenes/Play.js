@@ -114,7 +114,8 @@ class Play extends Phaser.Scene {
             fill: '#FFFFFF'
         }).setOrigin(0.5, 0.5);
         this.timerText.setAngle(37.5);
-    
+        
+        this.add.text(this.cameras.main.width*0.1, this.cameras.main.height*0.1, "Press (ESCAPE) to return to the main menu");
         // Start the timer
         this.time.addEvent({
             delay: 1000,
