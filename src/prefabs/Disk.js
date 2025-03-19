@@ -16,6 +16,7 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
             this.scene.orangeDisksGroup.add(this)
             // console.log("orange disk added to orangeDisk group")
         }
+       
         this.y -= 25;
         this.throwAngle = throwAngle;
         scene.physics.world.enable(this);
@@ -62,6 +63,7 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
         this.scene.events.on('update', this.slowDownDisk, this);
 
         this.scene.time.delayedCall(1500, () => {
+            this.scene.sfxCrash.play()
             this.destroy();
         });
     }
@@ -80,7 +82,8 @@ class Disk extends Phaser.Physics.Arcade.Sprite {
 
     handleWorldBoundsCollision(body, up, down, left, right) {
         if (body.gameObject === this) {
-            this.scene.sound.play('sfx-vineboom'); // Play the collision sound
+            
+            this.scene.sfxVineBoom.play(); // Play the collision sound
             this.scene.cameras.main.shake(200, 0.01);
         }
     }

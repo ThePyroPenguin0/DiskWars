@@ -15,12 +15,18 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        this.sfxWoosh = this.sound.add('sfx-woosh')
+        this.sfxWoosh.setVolume(.75)
+        this.sfxVineBoom = this.sound.add('sfx-vineboom')
+        this.sfxVineBoom.setVolume(.5)
+        this.sfxCrash = this.sound.add('sfx-crash')
+        this.sfxCrash.setVolume(.25)
         this.sfxBackground = this.sound.add('sfx-background')
         this.sfxBackground.setLoop(true)
         this.sfxBackground.setVolume(.25)
         this.sfxBackground.play()
         this.sfxDeathBoom = this.sound.add('sfx-deathBoom')
-        this.sfxDeathBoom.setVolume(0.7)
+        this.sfxDeathBoom.setVolume(0.8)
         this.blueDiskThrown = false;
         this.orangeDiskThrown = false;
         // You don't see the entire board on screen in game? I have some bad news for you...
@@ -184,11 +190,13 @@ class Play extends Phaser.Scene {
                 this.playerBlue.toggleMode();
             }
             else {
+                this.sfxWoosh.play()
                 this.playerBlue.throwDiskFromPlayer();
                 this.playerBlue.deleteLine();
             }
         });
         this.input.keyboard.on('keydown-X', () => {
+            this.sfxWoosh.play()
             this.playerBlue.deleteLine();
             this.playerBlue.throwDiskFromPlayer();
 
@@ -441,7 +449,10 @@ class Play extends Phaser.Scene {
         if (this.timeRemaining <= 0) { // End of game condition
             this.timeRemaining = 0;
             this.sound.stopAll();
-            this.scene.start('menuScene');
+            console.log("game ended winner time: ")
+            console.log("blue score",this.scoreBlue)
+            console.log("orange score",this.scoreOrange)
+            this.scene.start('winnerScene', { scoreBlue: this.scoreBlue, scoreOrange: this.scoreOrange});
         }
     }
     

@@ -1,6 +1,6 @@
 /*  Project name: Disk Wars
 *   Names: Gabriel Lipow and Michael Tang
-*   Components to be graded on: Physics, Animations, Tweens, Particles, Timer, Text Objects
+*   Components to be graded on: Physics, Animations, Tweens, Particles, Timer, Text Objects, cameras
 */
 'use strict'
 
@@ -18,7 +18,7 @@ let config = {
             debug: false
         }
     },
-    scene: [Load, Menu, Play]
+    scene: [Load, Menu, Play, Credits, Winner]
 
 }
 
