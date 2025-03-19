@@ -20,6 +20,12 @@ class Load extends Phaser.Scene{
         this.load.audio('sfx-tacobell', './assets/taco-bell-bong-sfx.mp3');
         this.load.audio('sfx-background','./assets/synthwave_background.mp3')
         this.load.audio('sfx-deathBoom','./assets/death_boom.mp3')
+        this.load.audio('sfx-win','./assets/win_sound.mp3')
+        this.load.audio('sfx-tied','./assets/tied_sound.mp3')
+        this.load.audio('sfx-blip','./assets/blip.mp3')
+        this.load.audio('sfx-woosh','./assets/woosh.mp3')
+        this.load.audio('sfx-crash','./assets/crash.mp3')
+        this.load.audio('sfx-menuMusic','./assets/menu_music.mp3')
         this.load.spritesheet('orange_nw_walk', './assets/orange_NW_walk_animation.png',{
             frameWidth: 32,
             frameHeight: 32,
@@ -96,12 +102,16 @@ class Load extends Phaser.Scene{
             startFrame: 0,
             endFrame: 7
         })
-        this.load.image('b_stand','./assets/blue_e_stand.png')
-        this.load.image('o_stand','./assets/orange_w_stand.png')
+        this.load.image('b_stand','./assets/blue_e_stand.png');
+        this.load.image('o_stand','./assets/orange_w_stand.png');
         this.load.image('hexBlue', 'assets/hexBlue.png');
         this.load.image('hexOrange', 'assets/hexOrange.png');
         this.load.image('diskBlue', './assets/diskBlue.png');
         this.load.image('diskOrange', './assets/diskOrange.png');
+        this.load.image('credits','./assets/credits.png');
+        this.load.image('p1_win','./assets/p1_win.png');
+        this.load.image('p2_win','./assets/p2_win.png');
+        this.load.image('tied','./assets/tied.png');
         
     }
     create(){
